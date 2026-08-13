@@ -1,0 +1,11 @@
+# Сборка
+out/
+*.class
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Отладочные логи
+debug-*.log
