@@ -1,7 +1,12 @@
+package sortvisualizer.sort;
+
+import sortvisualizer.metrics.Metrics;
+import sortvisualizer.viz.Visualizer;
+
 /**
  * Общий интерфейс всех сортировок (паттерн "Стратегия").
  * Чтобы добавить новую сортировку, достаточно написать класс с этим интерфейсом
- * и дописать его в список ALGORITHMS в классе Main.
+ * и дописать его в список ALGORITHMS в классе Algorithms.
  */
 public interface Sorter {
 

@@ -1,4 +1,9 @@
+package sortvisualizer.sort;
+
 import java.util.Map;
+
+import sortvisualizer.metrics.Metrics;
+import sortvisualizer.viz.Visualizer;
 
 /** Пузырьковая сортировка: соседние элементы сравниваются и при необходимости меняются местами. */
 public class BubbleSort implements Sorter {

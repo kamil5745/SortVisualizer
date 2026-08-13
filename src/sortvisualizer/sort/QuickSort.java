@@ -1,4 +1,9 @@
+package sortvisualizer.sort;
+
 import java.util.Map;
+
+import sortvisualizer.metrics.Metrics;
+import sortvisualizer.viz.Visualizer;
 
 /**
  * Быстрая сортировка, разбиение по Хоару (два указателя L и R идут навстречу).

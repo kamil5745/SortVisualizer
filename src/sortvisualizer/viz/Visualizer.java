@@ -1,6 +1,10 @@
+package sortvisualizer.viz;
+
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
+
+import sortvisualizer.metrics.Metrics;
 
 /**
  * Визуализатор: очищает экран и печатает очередной кадр.

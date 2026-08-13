@@ -1,4 +1,9 @@
+package sortvisualizer.sort;
+
 import java.util.Map;
+
+import sortvisualizer.metrics.Metrics;
+import sortvisualizer.viz.Visualizer;
 
 /**
  * Сортировка вставками: берём очередной элемент (key) и вставляем его

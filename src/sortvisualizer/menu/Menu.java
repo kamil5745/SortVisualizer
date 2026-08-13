@@ -1,90 +1,38 @@
+package sortvisualizer.menu;
+
 import java.util.Scanner;
 
-/**
- * SortVisualizer - консольная визуализация сортировок.
- *
- * Сценарий работы:
- *   1) ввод массива (с клавиатуры или из файла);
- *   2) выбор одной сортировки из меню;
- *   3) выбор скорости анимации;
- *   4) пошаговая визуализация сортировки на копии массива;
- *   5) статистика: сравнения, перестановки/записи, чистое время в наносекундах.
- */
-public class Main {
+import sortvisualizer.metrics.Metrics;
+import sortvisualizer.sort.Algorithms;
+import sortvisualizer.sort.Sorter;
+import sortvisualizer.viz.Visualizer;
 
-    /** Список алгоритмов. Чтобы добавить новый - допишите сюда его класс. */
-    private static final Sorter[] ALGORITHMS = {
-            new QuickSort(),
-            new MergeSort(),
-            new HeapSort(),
-            new BubbleSort(),
-            new InsertionSort(),
-            new SelectionSort()
-    };
+/** Меню: выбор алгоритма, скорости, подтверждение и вывод итогов. */
+public final class Menu {
 
-    public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-
-        System.out.println(Visualizer.DOUBLE_LINE);
-        System.out.println(" SortVisualizer - пошаговая визуализация сортировок");
-        System.out.println(Visualizer.DOUBLE_LINE);
-
-        int[] source = InputReader.readArray(in);
-        System.out.println("Исходный массив: " + Visualizer.list(source));
-        if (source.length > 25) {
-            System.out.println("Массив большой, кадров будет много - удобнее выбрать быструю скорость.");
-        }
-
-        boolean again = true;
-        while (again) {
-            Sorter sorter = chooseAlgorithm(in);
-            int delay = chooseSpeed(in);
-
-            int[] array = new int[source.length];
-            System.arraycopy(source, 0, array, 0, source.length);
-
-            Metrics metrics = new Metrics(sorter.getName());
-            Visualizer viz = new Visualizer(delay, metrics, in);
-
-            System.out.println();
-            System.out.println("Запускаем: " + sorter.getName());
-            System.out.print("Нажмите Enter для старта: ");
-            in.nextLine();
-
-            metrics.startTimer();
-            sorter.sort(array, viz, metrics);
-            metrics.stopTimer();
-
-            viz.clearScreen();
-            printResult(source, array, metrics);
-
-            again = askYesNo(in, "Выбрать другую сортировку?");
-        }
-
-        System.out.println("Работа завершена.");
-        in.close();
+    private Menu() {
     }
 
-    private static Sorter chooseAlgorithm(Scanner in) {
+    public static Sorter chooseAlgorithm(Scanner in) {
         while (true) {
             System.out.println();
             System.out.println("Выберите сортировку:");
-            for (int i = 0; i < ALGORITHMS.length; i++) {
-                System.out.println("  " + (i + 1) + " - " + ALGORITHMS[i].getName());
+            for (int i = 0; i < Algorithms.ALL.length; i++) {
+                System.out.println("  " + (i + 1) + " - " + Algorithms.ALL[i].getName());
             }
             System.out.print("Ваш выбор: ");
 
             String line = in.nextLine().trim();
             int number = toNumber(line);
-            if (number >= 1 && number <= ALGORITHMS.length) {
-                return ALGORITHMS[number - 1];
+            if (number >= 1 && number <= Algorithms.ALL.length) {
+                return Algorithms.ALL[number - 1];
             }
-            System.out.println("Нет такого пункта. Введите число от 1 до " + ALGORITHMS.length + ".");
+            System.out.println("Нет такого пункта. Введите число от 1 до " + Algorithms.ALL.length + ".");
         }
     }
 
     /** Возвращает задержку между кадрами в миллисекундах. */
-    private static int chooseSpeed(Scanner in) {
+    public static int chooseSpeed(Scanner in) {
         while (true) {
             System.out.println();
             System.out.println("Выберите скорость анимации:");
@@ -114,7 +62,7 @@ public class Main {
         }
     }
 
-    private static void printResult(int[] source, int[] sorted, Metrics metrics) {
+    public static void printResult(int[] source, int[] sorted, Metrics metrics) {
         System.out.println(Visualizer.DOUBLE_LINE);
         System.out.println(" СОРТИРОВКА ЗАВЕРШЕНА");
         System.out.println(Visualizer.DOUBLE_LINE);
@@ -130,7 +78,7 @@ public class Main {
         System.out.println(Visualizer.DOUBLE_LINE);
     }
 
-    private static boolean askYesNo(Scanner in, String question) {
+    public static boolean askYesNo(Scanner in, String question) {
         while (true) {
             System.out.print(question + " (y/n): ");
             String answer = in.nextLine().trim().toLowerCase();

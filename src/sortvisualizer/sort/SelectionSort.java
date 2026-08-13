@@ -1,4 +1,9 @@
+package sortvisualizer.sort;
+
 import java.util.Map;
+
+import sortvisualizer.metrics.Metrics;
+import sortvisualizer.viz.Visualizer;
 
 /** Сортировка выбором: ищем минимум в неотсортированной части и ставим его на место i. */
 public class SelectionSort implements Sorter {

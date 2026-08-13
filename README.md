@@ -30,11 +30,16 @@
 Нужен JDK 21 (проверялось на Temurin 21). Из корня проекта:
 
 ```bat
-javac -encoding UTF-8 -d out src\*.java
-java -cp out Main
+javac -encoding UTF-8 -d out -sourcepath src src\sortvisualizer\Main.java
+java -cp out sortvisualizer.Main
 ```
 
-В Linux/macOS вместо `src\*.java` пишем `src/*.java`.
+В Linux/macOS:
+
+```bash
+javac -encoding UTF-8 -d out -sourcepath src src/sortvisualizer/Main.java
+java -cp out sortvisualizer.Main
+```
 
 Если в консоли Windows вместо русских букв «кракозябры», переключите кодовую страницу:
 
@@ -92,18 +97,26 @@ chcp 65001
 ## Структура проекта
 
 ```
-src/
-  Main.java            меню, сценарий работы, вывод статистики
-  InputReader.java     ввод массива с клавиатуры и из файла
-  Sorter.java          общий интерфейс сортировок (паттерн "Стратегия")
-  Visualizer.java      очистка экрана, кадры, общие строки (индексы/массив/указатели)
-  Metrics.java         счётчики сравнений, перестановок/записей и таймер
-  QuickSort.java       быстрая сортировка (разбиение Хоара)
-  MergeSort.java       сортировка слиянием
-  HeapSort.java        пирамидальная сортировка
-  BubbleSort.java      пузырьковая сортировка
-  InsertionSort.java   сортировка вставками
-  SelectionSort.java   сортировка выбором
+src/sortvisualizer/
+  Main.java            точка входа
+  menu/
+    Application.java   сценарий: ввод → цикл → запуск → статистика
+    Menu.java          выбор алгоритма, скорости, y/n, вывод итога
+  input/
+    InputReader.java   ввод массива с клавиатуры и из файла
+  sort/
+    Sorter.java        общий интерфейс сортировок (паттерн "Стратегия")
+    Algorithms.java    список доступных алгоритмов для меню
+    QuickSort.java     быстрая сортировка (разбиение Хоара)
+    MergeSort.java     сортировка слиянием
+    HeapSort.java      пирамидальная сортировка
+    BubbleSort.java    пузырьковая сортировка
+    InsertionSort.java сортировка вставками
+    SelectionSort.java сортировка выбором
+  viz/
+    Visualizer.java    очистка экрана, кадры, общие строки (индексы/массив/указатели)
+  metrics/
+    Metrics.java       счётчики сравнений, перестановок/записей и таймер
 docs/
   viz-templates.md     шаблоны кадров визуализации
 data/
@@ -112,9 +125,14 @@ data/
 
 ## Как добавить новую сортировку
 
-1. Создать класс, реализующий интерфейс `Sorter`:
+1. Создать класс в пакете `sortvisualizer.sort`, реализующий интерфейс `Sorter`:
 
 ```java
+package sortvisualizer.sort;
+
+import sortvisualizer.metrics.Metrics;
+import sortvisualizer.viz.Visualizer;
+
 public class ShellSort implements Sorter {
     public String getName() {
         return "Сортировка Шелла";
@@ -128,7 +146,7 @@ public class ShellSort implements Sorter {
 }
 ```
 
-2. Дописать его в массив `ALGORITHMS` в `Main` — пункт меню появится сам.
+2. Дописать его в массив `ALL` в `Algorithms.java` — пункт меню появится сам.
 
 Готовые "кирпичики" кадра берутся из `Visualizer`: `header(...)`, `indexRow(...)`,
 `arrayRow(...)`, `pointerRow(...)`, `listRange(...)`, `SINGLE_LINE`.

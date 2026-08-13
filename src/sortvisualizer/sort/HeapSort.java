@@ -1,3 +1,8 @@
+package sortvisualizer.sort;
+
+import sortvisualizer.metrics.Metrics;
+import sortvisualizer.viz.Visualizer;
+
 /**
  * Пирамидальная сортировка (куча).
  * Массив показывается как текстовое двоичное дерево, нарушение свойства кучи
